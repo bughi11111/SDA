@@ -1,0 +1,121 @@
+
+ #Butoanele din meniu
+<ButonMeniu@Button>:
+    size_hint_y: None
+    height: '48dp'
+    background_color: 0, 0, 0, 0  # Transparent
+    color: 1, 1, 1, 1             # Text Alb
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1 # Fundal gri inchis
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+# Meniul ascuns
+<MeniuNavigare>:
+    auto_width: False
+    width: '300dp'  # Latimea meniului cand se deschide
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        height: self.minimum_height
+
+        ButonMeniu:
+            text: "REZERVA"
+            # on_release: root.dismiss() # Asta ar inchide meniul dupa click
+        ButonMeniu:
+            text: "MENIU"
+            # on_release: root.dismiss()
+        ButonMeniu:
+            text: "GALERIE"
+            # on_release: root.dismiss()
+
+#LAYOUT PRINCIPAL
+<JunoMainLayout>:
+    orientation: 'vertical'
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # Fundal ALB
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    #  HEADER
+    BoxLayout:
+        size_hint_y: 0.08  # Ocupa 8% din inaltime (bara subtire sus)
+        padding: [10, 0]   # Padding stanga-dreapta
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Butonul (3 linii)
+        Button:
+            text: "|||"
+            font_size: '30sp'
+            color: 0, 0, 0, 1        # Negru
+            background_color: 0,0,0,0 # Transparent
+            size_hint_x: None
+            width: '50dp'
+            # Cand apasam, apelam functia din Python
+            on_release: root.deschide_meniu(self)
+
+        # Logo mic in dreapta sau centru
+        Image:
+            source: 'logo.png'
+            fit_mode: 'contain'
+            size_hint_x: None
+            width: '200dp'
+
+    #  CONTINUT
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 30
+        spacing: 20
+
+        Video:
+            source: 'juno.mp4'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            fit_mode: 'cover'
+
+        # Titlu
+        Label:
+            text: "Juno Wine Garden"
+            color: 0, 0, 0, 1
+            font_size: '20sp'
+            bold: True
+            size_hint_y: None
+            height: self.texture_size[1] + 20
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.width, None
+
+        # Textul descriptiv
+        Label:
+            text: 'Beautiful wine garden nested between the citadel walls. '
+            color: 0.2, 0.2, 0.2, 1
+            font_size: '16sp'
+            size_hint_y: None
+            height: self.texture_size[1]
+            halign: 'center'
+            valign: 'top'
+            text_size: self.width, None
+
+        Label:
+            text: "Strada Dupa Ziduri Brasov\nLuni, Miercuri, Joi, Duminca: 12:00 - 00:00\nMarti: 16:00 - 00\nVineri - Sâmbătă: 12:00 - 00:00"
+            color: 0.3, 0.3, 0.3, 1
+            font_size: '11sp'
+            halign: 'center'
+            valign: 'top'
+            line_height: 1.2
+            text_size: self.width, None
+
+
