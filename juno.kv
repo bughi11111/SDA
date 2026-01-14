@@ -1,5 +1,5 @@
 
- #Butoanele din meniu
+#Butoanele din meniu
 <ButonMeniu@Button>:
     size_hint_y: None
     height: '48dp'
@@ -12,10 +12,9 @@
             pos: self.pos
             size: self.size
 
-# Meniul ascuns
 <MeniuNavigare>:
     auto_width: False
-    width: '300dp'  # Latimea meniului cand se deschide
+    width: '300dp'
 
     BoxLayout:
         orientation: 'vertical'
@@ -24,26 +23,66 @@
 
         ButonMeniu:
             text: "REZERVA"
-            # on_release: root.dismiss() # Asta ar inchide meniul dupa click
+            on_release: root.mergi_la("rezerva")
         ButonMeniu:
             text: "MENIU"
-            # on_release: root.dismiss()
+            on_release: root.mergi_la("meniu")
         ButonMeniu:
             text: "GALERIE"
-            # on_release: root.dismiss()
+            on_release: root.mergi_la("galerie")
 
-#LAYOUT PRINCIPAL
-<JunoMainLayout>:
-    orientation: 'vertical'
+<HomeScreen>:
+    JunoMainLayout
 
-    canvas.before:
-        Color:
-            rgba: 1, 1, 1, 1  # Fundal ALB
-        Rectangle:
-            pos: self.pos
-            size: self.size
+<MeniuScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
 
-    #  HEADER
+        Label:
+            text: "Ecran Meniu"
+            font_size: '20sp'
+
+        Button:
+            text: "Înapoi"
+            size_hint_y: None
+            height: '48dp'
+            on_release: app.root.current = "home"
+
+
+<RezervaScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
+        canvas.before:
+            Color:
+                rgba: 1,1,1,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Ecran Rezervare"
+            font_size: '20sp'
+
+        Button:
+            text: "Înapoi"
+            size_hint_y: None
+            height: '48dp'
+            on_release: app.root.current = "home"
+
+<GalerieScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1  # Fundal ALB
+            Rectangle:
+                pos: self.pos
+                size: self.size
     BoxLayout:
         size_hint_y: 0.08  # Ocupa 8% din inaltime (bara subtire sus)
         padding: [10, 0]   # Padding stanga-dreapta
@@ -54,19 +93,37 @@
             Rectangle:
                 pos: self.pos
                 size: self.size
+        Button:
+            text: "Înapoi"
+            size_hint_y: None
+            height: '48dp'
+            on_release: app.root.current = "home"
 
-        # Butonul (3 linii)
+<JunoMainLayout>:
+    orientation: 'vertical'
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # HEADER
+    BoxLayout:
+        size_hint_y: 0.08
+        padding: [10, 0]
+        spacing: 10
+
         Button:
             text: "|||"
             font_size: '30sp'
-            color: 0, 0, 0, 1        # Negru
-            background_color: 0,0,0,0 # Transparent
+            color: 0, 0, 0, 1
+            background_color: 0,0,0,0
             size_hint_x: None
             width: '50dp'
-            # Cand apasam, apelam functia din Python
             on_release: root.deschide_meniu(self)
 
-        # Logo mic in dreapta sau centru
         Image:
             source: 'logo.png'
             fit_mode: 'contain'
@@ -117,5 +174,4 @@
             valign: 'top'
             line_height: 1.2
             text_size: self.width, None
-
 
