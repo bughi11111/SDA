@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juno Kitchen | Local Display</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DEFINIRE CULORI JUNO --- */
+        :root {
+            --juno-brown: #3e2b26;   /* Maro închis elegant */
+            --juno-green: #4a6741;   /* Verdele de grădină */
+            --juno-gold: #c5a059;    /* Auriu/Muștar pentru accente */
+            --bg-cream: #f9f7f2;     /* Crem deschis (hârtie meniu) */
+            --card-bg: #ffffff;
+            --text-dark: #2c2c2c;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            /* Model subtil de fundal */
+            background-image: radial-gradient(#e0ded8 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--juno-gold);
+            background-color: var(--juno-brown);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 0.9em;
+            letter-spacing: 3px;
+            color: var(--juno-gold);
+            margin-top: 5px;
+            font-weight: 300;
+        }
+
+        /* --- CONTAINER COMENZI --- */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* --- DESIGN CARD COMANDĂ --- */
+        .order-card {
+            background: var(--card-bg);
+            width: 320px;
+            border-radius: 12px;
+            border-top: 6px solid var(--juno-green); /* Banda verde sus */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.6s ease-out;
+            position: relative;
+        }
+
+        .card-header {
+            background-color: #f4f4f4;
+            padding: 15px 20px;
+            border-bottom: 1px dashed #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .masa {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--juno-brown);
+        }
+
+        .ora {
+            background: #e0e0e0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 5px;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .produs-nume {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .produs-pret {
+            font-family: 'Playfair Display', serif;
+            color: var(--juno-green);
+            font-weight: bold;
+        }
+
+        .card-footer {
+            background-color: var(--juno-brown);
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-size: 1.2em;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Mesaj când nu sunt comenzi */
+        .empty-msg {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            font-size: 1.5em;
+            font-family: 'Playfair Display', serif;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Bara de încărcare pentru refresh */
+        .refresh-bar {
+            height: 3px;
+            background: var(--juno-gold);
+            width: 0%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .btn-finalizat {
+            background-color: var(--juno-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.3s;
+    }
+    .btn-finalizat:hover {
+        background-color: var(--juno-brown);
+}
+    </style>
+</head>
+<body>
+
+    <div class="refresh-bar"></div>
+
+    <header>
+        <h1>Juno Wine Garden</h1>
+        <div class="subtitle">KITCHEN DISPLAY SYSTEM</div>
+    </header>
+
+    <div id="comenzi-container" class="container">
+        </div>
+
+    <script src="date_comenzi.js"></script>
+
+    
+    <script>
+    let script = document.createElement('script');
+    script.src = "date_comenzi.js?v=" + Date.now();
+    document.head.appendChild(script);
+
+ function calculeazaMinuteTrecute(ora) {
+        if (!ora) return 0;
+        const acum = new Date();
+        const p = ora.split(':').map(Number);
+        const d = new Date();
+        d.setHours(p[0], p[1], p[2] || 0);
+        let dif = acum - d;
+        if (dif < 0) dif += 86400000;
+        return Math.floor(dif / 60000);
+    }
+
+   function finalizeazaComanda(oraId, titlu) {
+        // Efect vizual: ascundem cardul imediat
+        const card = document.getElementById("card-" + oraId.replace(/:/g, ''));
+        if (card) card.style.opacity = '0.3';
+
+        fetch(`http://127.0.0.1:5000/comanda_gata?id=${encodeURIComponent(oraId)}&nume=${encodeURIComponent(titlu)}`)
+            .then(r => r.json())
+            .then(data => {
+                window.location.reload();
+            })
+            .catch(e => alert("Eroare: Dispecer.py nu rulează!"));
+    }
+
+ function afiseazaComenzi() {
+        const container = document.getElementById('comenzi-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (typeof window.date_comenzi === 'undefined' || !window.date_comenzi || window.date_comenzi.length === 0) {
+            container.innerHTML = '<div class="empty-msg">Fără comenzi active. 🍷</div>';
+            return;
+        }
+
+        window.date_comenzi.slice().reverse().forEach(comanda => {
+            const minTrecute = calculeazaMinuteTrecute(comanda.data);
+            const timpRamas = 30 - minTrecute;
+            if (timpRamas <= 0) return;
+
+            const titluComanda = `Comanda #${comanda.data}`;
+            const oraId = comanda.data;
+
+            let listaProduseHTML = '';
+            if (comanda.produse) {
+                comanda.produse.forEach(p => {
+                    listaProduseHTML += `<li style="margin-bottom: 4px;">• ${p.nume}</li>`;
+                });
+            }
+
+            let col = timpRamas <= 10 ? "#d9534f" : (timpRamas <= 20 ? "#c5a059" : "#4a6741");
+
+            container.innerHTML += `
+                <div class="order-card" id="card-${oraId.replace(/:/g, '')}">
+                    <div class="card-header" style="border-bottom: 2px solid ${col}">
+                        <span class="masa">${comanda.masa}</span>
+                        <div style="text-align:right">
+                            <span class="ora">🕒 ${comanda.data}</span><br>
+                            <b style="color:${col}">Expiră în: ${timpRamas} min</b>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="margin:10px 0 5px 0; color: #2c3e50; font-size: 1.2em; background: #f8f9fa; padding: 5px; border-radius: 4px; text-align: center;">
+                            ${titluComanda}
+                        </h4>
+                        <ul style="list-style:none; padding:0; margin: 12px 0; font-size:0.95em; color:#444; border-left: 3px solid #eee; padding-left: 10px;">
+                            ${listaProduseHTML}
+                        </ul>
+                        <button class="btn-finalizat" onclick="finalizeazaComanda('${oraId}', '${titluComanda}')">
+                            MARCHEAZĂ CA GATA
+                        </button>
+                    </div>
+                </div>`;
+        });
+    }
+
+
+
+function finalizeazaComanda(ora, nume) {
+    // Trimitem ora la server pentru a ști ce să șteargă
+    fetch(`http://127.0.0.1:5000/comanda_gata?id=${encodeURIComponent(ora)}&nume=${encodeURIComponent(nume)}`)
+        .then(r => r.json())
+        .then(data => {
+            window.location.reload();
+        })
+        .catch(e => alert("Eroare: Dispecer.py nu rulează!"));
+}
+
+    window.onload = function() {
+        afiseazaComenzi();
+        setInterval(afiseazaComenzi, 20000); // Refresh la lista la fiecare 20s
+    };
+
+    </script>
+
+</body>
+</html>
